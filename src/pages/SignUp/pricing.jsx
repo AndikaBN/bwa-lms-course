@@ -2,7 +2,10 @@ import React from 'react'
 import Navbar from '../../components/navbar'
 import { Link } from 'react-router-dom'
 
-export default function Pricing() {
+export default function Pricing({data}) {
+
+    console.log('data', data);
+
   return (
     <div className="relative flex flex-col flex-1 p-[10px]">
         <div className="absolute w-[calc(100%-20px)] min-h-[calc(100vh-20px)] h-[calc(100%-20px)] bg-[#060A23] -z-10 rounded-[20px]">
