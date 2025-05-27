@@ -10,7 +10,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
-    
   )
 }
 
