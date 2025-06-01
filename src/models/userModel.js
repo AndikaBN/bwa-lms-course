@@ -22,7 +22,15 @@ const userModel = new mongoose.Schema({
         type: String,
         enum: ['manager', 'student'],
         default: 'manager',
-    }
+    },
+    courses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }],
+    manager: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 })
 
 export default mongoose.model("User", userModel)

@@ -17,4 +17,4 @@ export const validateRequest = (schema) => async (req, res, next) =>{
             error: "Internal Server Error",
         });
     }
-} 
+}
