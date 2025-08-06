@@ -5,7 +5,7 @@ const CourseModel = new mongoose.Schema({
         type: String,
         required: true,
     },
-    tumbhnail: {
+    thumbnail: {
         type: String,
         required: true,
     },

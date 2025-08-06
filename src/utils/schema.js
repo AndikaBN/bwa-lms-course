@@ -8,7 +8,7 @@ export const signUpSchema = z.object({
     name : z.string().min(5),
     email : z.string().email(),
     password : z.string().min(6),
-})
+});
 
 export const signInSchema = signUpSchema.omit({name:true});
 
@@ -17,4 +17,4 @@ export const mutateCourseSchema = z.object({
     categoryId : z.string(),
     tagline: z.string().min(5),
     description: z.string().min(10),
-})
+});

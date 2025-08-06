@@ -7,7 +7,7 @@ export const fileStorageCourse = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
-        const uniqId = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+        const uniqId = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
         cb(null, `${file.fieldname}-${uniqId}${ext}`);
     }
 });
@@ -16,6 +16,6 @@ export const fileFilter = (req, file, cb) => {
     if (file.mimetype === "image/jpeg" || file.mimetype === "image/jpg" || file.mimetype === "image/png") {
         cb(null, true);
     } else {
-        cb(new Error("Invalid file type. Only JPEG, JPG and PNG are allowed."), false);
+        cb(null, false);
     }
 };
