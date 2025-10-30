@@ -11,6 +11,8 @@ import ManageContentCreatePage from "../pages/manager/course-content-create";
 import ManageCoursePreviewPage from "../pages/manager/course-preview";
 import ManageStudentPage from "../pages/manager/student";
 import StudentPage from "../pages/student/StudentOverview";
+import secureLocalStorage from "react-secure-storage";
+import { STORAGE_KEY } from "../utils/const";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/manager",
+    loader: async  () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY);
+
+      console.log(session);
+
+      return true
+      
+    }, 
     element: <LayoutDashboard />,
     children: [
       {
