@@ -43,6 +43,22 @@ export const GetCourse = async (req, res) => {
   }
 };
 
+export const GetCategory = async (req, res) => {
+  try {
+    const categories = await categoryModel.find();
+
+    return res.json({
+      message: "Get Categories Success",
+      data: categories,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
+
 export const postCourse = async (req, res) => {
   try {
     const body = req.body;
