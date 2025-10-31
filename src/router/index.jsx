@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import SuccesCheckoutPage from "../pages/SuccesCheckout";
@@ -12,7 +12,8 @@ import ManageCoursePreviewPage from "../pages/manager/course-preview";
 import ManageStudentPage from "../pages/manager/student";
 import StudentPage from "../pages/student/StudentOverview";
 import secureLocalStorage from "react-secure-storage";
-import { STORAGE_KEY } from "../utils/const";
+import { MANAGER_SESSION, STORAGE_KEY } from "../utils/const";
+import { getCategories, getCourses } from "../services/courseService";
 
 const router = createBrowserRouter([
   {
@@ -33,12 +34,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/manager",
+    id: MANAGER_SESSION,
     loader: async  () => {
       const session = secureLocalStorage.getItem(STORAGE_KEY);
 
-      console.log(session);
+      if (!session || session.role !== "manager") {
+        throw redirect("/manager/sign-in");
+      }
 
-      return true
+      return session;
       
     }, 
     element: <LayoutDashboard />,
@@ -49,10 +53,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/manager/courses",
+        loader: async () => {
+          const data = await getCourses();
+          console.log(data);
+          return data;
+        },
         element: <ManageCoursePage />,
       },
       {
         path: "/manager/courses/create",
+        loader: async () => {
+          const categories = await getCategories();
+          return categories;
+        },
         element: <ManageCreateCoursePage />,
       },
       {

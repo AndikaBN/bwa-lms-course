@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
+import { STORAGE_KEY } from "../utils/const";
 
 export default function Header() {
+
+  const handleLogout = () => {
+    secureLocalStorage.removeItem(STORAGE_KEY);
+
+    window.location.replace("/manager/sign-in");
+  }
+
   return (
     <div id="TopBar" className="flex items-center justify-between gap-[30px]">
       <form
@@ -49,7 +58,7 @@ export default function Header() {
               <Link to="#">Settings</Link>
             </li>
             <li className="font-semibold">
-              <Link to="signin.html">Logout</Link>
+              <button type="button" onClick={handleLogout}>Logout</button>
             </li>
           </ul>
         </div>
