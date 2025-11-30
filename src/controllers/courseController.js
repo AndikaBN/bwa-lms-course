@@ -43,6 +43,24 @@ export const GetCourse = async (req, res) => {
   }
 };
 
+export const GetCourseById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const course = await courseModel.findById(id);
+
+    return res.json({
+      message: "get Course success",
+      data: course,
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
+
 export const GetCategory = async (req, res) => {
   try {
     const categories = await categoryModel.find();

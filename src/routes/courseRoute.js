@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteCourse, GetCategory, GetCourse, postCourse, updateCourse } from "../controllers/courseController.js";
+import { deleteCourse, GetCategory, GetCourse, GetCourseById, postCourse, updateCourse } from "../controllers/courseController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import multer from "multer";
 import { fileStorageCourse, fileFilter } from "../utils/multer.js";
@@ -12,6 +12,8 @@ const upload = multer({
 });
 
 courseRoutes.get("/courses", verifyToken, GetCourse);
+
+courseRoutes.get("/courses/:id", verifyToken, GetCourseById);
 
 courseRoutes.get("/categories", verifyToken, GetCategory);
 
