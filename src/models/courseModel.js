@@ -32,7 +32,7 @@ const CourseModel = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-    detail: [
+    details: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "CourseDetail",
@@ -60,6 +60,6 @@ CourseModel.post('findOneAndDelete', async (doc) => {
             })
         })
     }
-})
+});
 
 export default mongoose.model("Course", CourseModel);

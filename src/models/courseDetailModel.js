@@ -1,25 +1,39 @@
 import mongoose from "mongoose";
 import { string } from "zod";
+import courseModel from "./courseModel.js";
 
-const courseDetailModel = new mongoose.Schema({
+const courseDetailModel = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     type: {
-        type: String,
-        enum: ['video', 'text'],
-        default: 'video',
+      type: String,
+      enum: ["video", "text"],
+      default: "video",
     },
-    videoId: String,
+    youtubeId: String,
     text: String,
     course: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Course",
-        required: true,
-    }
-}, {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
+    },
+  },
+  {
     timestamps: true,
-})
+  }
+);
+
+courseDetailModel.post("findOneAndDelete", async (doc) => {
+  if (doc) {
+    await courseModel.findByIdAndUpdate(doc.course, {
+      $pull: {
+        details: doc._id,
+      },
+    });
+  }
+});
 
 export default mongoose.model("CourseDetail", courseDetailModel);
