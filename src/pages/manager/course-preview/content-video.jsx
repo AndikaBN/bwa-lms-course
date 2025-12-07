@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function ContentVideo() {
+export default function ContentVideo({ content, handleNext }) {
   return (
     <>
       <div className="flex shrink-0 h-[calc(100vh-110px-104px)] rounded-[20px] overflow-hidden">
         <iframe
           className="w-full aspect-video"
-          src="https://www.youtube.com/embed/tYyPdH32faE?si=heerM3KnIDqdfrZJ"
+          src={`https://www.youtube.com/embed/${content?.videoId}?si=heerM3KnIDqdfrZJ`}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -16,10 +17,11 @@ export default function ContentVideo() {
       </div>
       <div className="flex items-center justify-between gap-5">
         <h1 className="font-bold text-[32px] leading-[48px]">
-          Install Figma Plugins
+          {content?.title}
         </h1>
         <button
           type="button"
+          onClick={() => handleNext(content)}
           className="w-fit rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap"
         >
           Mark as Completed
@@ -28,3 +30,8 @@ export default function ContentVideo() {
     </>
   );
 }
+
+ContentVideo.propTypes = {
+  content: PropTypes.object,
+  handleNext: PropTypes.func,
+};
