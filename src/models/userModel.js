@@ -27,10 +27,10 @@ const userModel = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
     }],
-    manager: [{
+    manager: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }]
+        ref: 'User',   
+    }
 })
 
 export default mongoose.model("User", userModel)
