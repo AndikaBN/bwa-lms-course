@@ -7,7 +7,6 @@ export default function StudentItem({
     name = "Angga Risky Setiawan",
     totalCourse = 183,
     id = 1,
-
 }) {
   return (
     <div className="card flex items-center gap-5">
