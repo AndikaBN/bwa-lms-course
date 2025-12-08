@@ -14,6 +14,7 @@ import StudentPage from "../pages/student/StudentOverview";
 import secureLocalStorage from "react-secure-storage";
 import { MANAGER_SESSION, STORAGE_KEY } from "../utils/const";
 import { getCategories, getCourses, getCoursesDetail, getDetailContent } from "../services/courseService";
+import ManageStudentCreatePage from "../pages/manager/student-create";
 
 const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
       {
         path: "/manager/students",
         element: <ManageStudentPage />,
+      },
+      {
+        path: "/manager/students/create",
+        element: <ManageStudentCreatePage />
       }
     ],
   },
