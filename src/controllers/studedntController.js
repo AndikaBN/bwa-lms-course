@@ -16,10 +16,16 @@ export const getStudents = async (req, res) => {
 
     const imageUrl = process.env.APP_URL + "/uploads/students/";
 
+    const coursesData = await courseModel.find({
+      manager: req.user._id,
+    }).select("students");
+
     const response = students.map((item) => {
+      const studentCourses = coursesData.filter(course => course.students.includes(item._id));
       return {
         ...item.toObject(),
         photo_url: imageUrl + item.photo,
+        courses: studentCourses,
       };
     });
 
@@ -34,6 +40,30 @@ export const getStudents = async (req, res) => {
     });
   }
 };
+
+export const getStudentById = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const student = await userModel.findById(id).select("name email");
+
+    if (!student) {
+      return res.status(404).json({
+        message: "Student Not Found",
+      });
+    }
+
+    return res.json({
+      message: "Get Student Detail Success",
+      data: student,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
 
 export const postStudent = async (req, res) => {
   try {
