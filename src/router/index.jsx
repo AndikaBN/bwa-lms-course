@@ -13,9 +13,14 @@ import ManageStudentPage from "../pages/manager/student";
 import StudentPage from "../pages/student/StudentOverview";
 import secureLocalStorage from "react-secure-storage";
 import { MANAGER_SESSION, STORAGE_KEY } from "../utils/const";
-import { getCategories, getCourses, getCoursesDetail, getDetailContent } from "../services/courseService";
+import {
+  getCategories,
+  getCourses,
+  getCoursesDetail,
+  getDetailContent,
+} from "../services/courseService";
 import ManageStudentCreatePage from "../pages/manager/student-create";
-import { getStudents } from "../services/studentService";
+import { getStudentDetail, getStudents } from "../services/studentService";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +42,7 @@ const router = createBrowserRouter([
   {
     path: "/manager",
     id: MANAGER_SESSION,
-    loader: async  () => {
+    loader: async () => {
       const session = secureLocalStorage.getItem(STORAGE_KEY);
 
       if (!session || session.role !== "manager") {
@@ -45,8 +50,7 @@ const router = createBrowserRouter([
       }
 
       return session;
-      
-    }, 
+    },
     element: <LayoutDashboard />,
     children: [
       {
@@ -67,24 +71,24 @@ const router = createBrowserRouter([
         loader: async () => {
           const categories = await getCategories();
 
-          return {categories, course: null};
+          return { categories, course: null };
         },
         element: <ManageCreateCoursePage />,
       },
       {
         path: "/manager/courses/edit/:id",
-        loader: async ({params}) => {
+        loader: async ({ params }) => {
           const categories = await getCategories();
           const course = await getCoursesDetail(params.id);
           console.log(course);
-          
-          return {categories, course : course?.data};
+
+          return { categories, course: course?.data };
         },
         element: <ManageCreateCoursePage />,
       },
       {
         path: "/manager/courses/:id",
-        loader: async ({params}) => {
+        loader: async ({ params }) => {
           const course = await getCoursesDetail(params.id);
 
           return course?.data;
@@ -97,7 +101,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/manager/courses/:id/edit/:contentId",
-        loader: async ({params}) => {
+        loader: async ({ params }) => {
           const content = await getDetailContent(params.contentId);
           return content?.data;
         },
@@ -105,7 +109,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/manager/courses/:id/preview",
-        loader: async ({params}) => {
+        loader: async ({ params }) => {
           const course = await getCoursesDetail(params.id, true);
 
           return course?.data;
@@ -122,8 +126,16 @@ const router = createBrowserRouter([
       },
       {
         path: "/manager/students/create",
-        element: <ManageStudentCreatePage />
-      }
+        element: <ManageStudentCreatePage />,
+      },
+      {
+        path: "/manager/students/edit/:id",
+        loader: async ({ params }) => {
+          const student = await getStudentDetail(params.id);
+          return student?.data;
+        },
+        element: <ManageStudentCreatePage />,
+      },
     ],
   },
   {
@@ -137,9 +149,9 @@ const router = createBrowserRouter([
       {
         path: "/student/detail-course/:id",
         element: <ManageCoursePreviewPage />,
-      }
-    ]
-  }
+      },
+    ],
+  },
 ]);
 
 export default router;
