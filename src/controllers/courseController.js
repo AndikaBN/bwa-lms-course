@@ -367,11 +367,19 @@ export const getStudentByCourseId = async (req, res) => {
 
     const imageUrl = process.env.APP_URL + "/uploads/students/";
 
-    
+    const studentMap = course?.students.map((item) => {
+      return {
+        ...item.toObject(),
+        photo_url: imageUrl + item.photo,
+      };
+    });
 
     return res.json({
       message: "Get Students By Course Success",
-      data: course,
+      data: {
+        ...course.toObject(),
+        students: studentMap,
+      },
     });
   } catch (error) {
     console.log(error);
