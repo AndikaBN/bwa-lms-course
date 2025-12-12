@@ -365,6 +365,10 @@ export const getStudentByCourseId = async (req, res) => {
       select: "name email photo",
     });
 
+    const imageUrl = process.env.APP_URL + "/uploads/students/";
+
+    
+
     return res.json({
       message: "Get Students By Course Success",
       data: course,
