@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 
 export default function ManageStudentCourseListPage() {
+
+    const {id} = useParams();
+    const course = useLoaderData();
+    console.log(course);
+    
+
   return (
     <>
       <header className="flex items-center justify-between gap-[30px]">
@@ -20,7 +26,7 @@ export default function ManageStudentCourseListPage() {
             Import File
           </Link>
           <Link
-            to="/manager/students/create"
+            to={`/manager/courses/students/${id}/add`}
             className="w-fit rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap"
           >
             Add Student
