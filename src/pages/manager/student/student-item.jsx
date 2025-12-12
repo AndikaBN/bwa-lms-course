@@ -7,7 +7,7 @@ import { deleteStudent } from "../../../services/studentService";
 export default function StudentItem({
     imageUrl = "/assets/images/photos/photo-3.png",
     name = "Angga Risky Setiawan",
-    totalCourse = 183,
+    totalCourse = 0,
     id = 1,
 }) {
 

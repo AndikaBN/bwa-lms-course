@@ -1,11 +1,10 @@
 import { Link, useLoaderData, useParams } from "react-router-dom";
+import StudentItem from "../student/student-item";
 
 export default function ManageStudentCourseListPage() {
-
-    const {id} = useParams();
-    const course = useLoaderData();
-    console.log(course);
-    
+  const { id } = useParams();
+  const course = useLoaderData();
+  console.log(course);
 
   return (
     <>
@@ -37,7 +36,14 @@ export default function ManageStudentCourseListPage() {
         id="CourseList"
         className="flex flex-col w-full rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]"
       >
-        {/*  */}
+        {course?.students?.map((student) => (
+          <StudentItem
+            key={student._id}
+            id={student._id}
+            imageUrl={student.photo_url}
+            name={student.name}
+          />
+        ))}
       </section>
     </>
   );
