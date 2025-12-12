@@ -49,15 +49,16 @@ export const GetCourseById = async (req, res) => {
     const { id } = req.params;
     const { preview } = req.query;
 
-    const course = await courseModel.findById(id)
-    .populate({
+    const course = await courseModel
+      .findById(id)
+      .populate({
         path: "category",
         select: "name -_id",
       })
-    .populate({
-      path: "details",
-      select: preview ? "title type youtubeId text" : "title type",
-    });
+      .populate({
+        path: "details",
+        select: preview ? "title type youtubeId text" : "title type",
+      });
 
     if (!course) {
       return res.status(404).json({
@@ -339,82 +340,103 @@ export const deleteContentCourse = async (req, res) => {
 
 export const getDetailContent = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const content = await courseDetailModel.findById(id);
 
     return res.json({
-      message : "Get Content Success",
-      data : content,
+      message: "Get Content Success",
+      data: content,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message : "Internal server error",
+      message: "Internal server error",
     });
   }
-} 
+};
 
 export const getStudentByCourseId = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const course = await courseModel.findById(id).select("name").populate({
-      path : "students",
-      select : "name email photo",
+      path: "students",
+      select: "name email photo",
     });
 
     return res.json({
-      message : "Get Students By Course Success",
-      data : course,
+      message: "Get Students By Course Success",
+      data: course,
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message : "Internal server error",
+      message: "Internal server error",
     });
   }
-}
+};
 
 export const postStudentToCourse = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const body = req.body;
-    const course = await courseModel.findById(id);
 
-    if (!course) {
-      return res.status(404).json({
-        message : "Course Not Found",
-      });
-    }
-
-    const student = await userModel.findById(body.studentId); 
-
-    if (!student) {
-      return res.status(404).json({
-        message : "Student Not Found",
-      });
-    }
+    await userModel.findByIdAndUpdate(
+      body.studentId,
+      {
+        $push: {
+          courses: id,
+        },
+      },
+      { new: true }
+    );
 
     await courseModel.findByIdAndUpdate(
       id,
       {
-        $addToSet: {
-          students: student._id,
+        $push: {
+          students: body.studentId,
         },
       },
       { new: true }
     );
 
     return res.json({
-      message : "Add Student to Course Success",
+      message: "Add Student to Course Success",
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message : "Internal server error",
+      message: "Internal server error",
     });
   }
-}
+};
+
+export const deleteStudentToCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+
+    await userModel.findByIdAndUpdate(body.studentId, {
+      $pull: {
+        courses: id,
+      },
+    });
+
+    await courseModel.findByIdAndUpdate(id, {
+      $pull: {
+        students: body.studentId,
+      },
+    });
+
+    return res.json({
+      message: "Delete Student from Course Success",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
