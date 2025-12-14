@@ -22,7 +22,7 @@ import {
 } from "../services/courseService";
 import ManageStudentCreatePage from "../pages/manager/student-create";
 import { getStudentDetail, getStudents } from "../services/studentService";
-import ManageStudentCourseListPage from "../pages/manager/course-student-list";
+import ManageStudentCourseListPage from "../pages/manager/student-course";
 
 const router = createBrowserRouter([
   {
@@ -145,6 +145,10 @@ const router = createBrowserRouter([
           return students?.data;
         },
         element: <ManageStudentCourseListPage/>
+      },
+      {
+        path: "/manager/courses/students/:id/add",
+        element: async () => 
       }
     ],
   },
