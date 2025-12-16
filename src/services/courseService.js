@@ -39,3 +39,7 @@ export const getCoursePreview = async (id) => apiInstanceWithAuth.get(`/courses/
 export const getDetailContent = async (id) => apiInstanceWithAuth.get(`/courses/contents/${id}`).then((res) => res.data);
 
 export const getStudentsCourse = async (id) => apiInstanceWithAuth.get(`/courses/students/${id}`).then((res) => res.data);
+
+export const addStudentsCourse = async (data, id) => apiInstanceWithAuth.post(`/courses/students/${id}`, data).then((res) => res.data);
+
+export const deleteStudentsCourse = async (data, id) => apiInstanceWithAuth.put(`/courses/students/${id}`, data).then((res) => res.data);
