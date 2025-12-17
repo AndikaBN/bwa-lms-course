@@ -1,8 +1,12 @@
 import React from "react";
 import Courses from "./courses";
 import Students from "./students";
+import { useLoaderData } from "react-router-dom";
 
 export default function ManagerHome() {
+  const getOverviews = useLoaderData();
+  console.log(getOverviews);
+
   return (
     <>
       <header className="flex items-center justify-between gap-[30px]">
