@@ -33,10 +33,28 @@ const router = createBrowserRouter([
   },
   {
     path: "/manager/sign-in",
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY);
+
+      if (session && session.role === "manager") {
+        throw redirect("/manager");
+      }
+
+      return true;
+    },
     element: <SignInPage />,
   },
   {
     path: "/manager/sign-up",
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY);
+
+      if (session && session.role === "manager") {
+        throw redirect("/manager");
+      }
+
+      return true;
+    },
     element: <SignUpPage />,
   },
   {
@@ -60,8 +78,8 @@ const router = createBrowserRouter([
       {
         index: true,
         loader: async () => {
-          const data = await getOverviews();
-          return data?.data;
+          const overviews = await getOverviews();
+          return overviews?.data;
         },
         element: <ManagerHomePage />,
       },
@@ -146,11 +164,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/manager/courses/students/:id",
-        loader: async ({params}) => {
+        loader: async ({ params }) => {
           const students = await getStudentsCourse(params.id);
           return students?.data;
         },
-        element: <ManageStudentCourseListPage/>
+        element: <ManageStudentCourseListPage />,
       },
       {
         path: "/manager/courses/students/:id/add",
@@ -158,8 +176,8 @@ const router = createBrowserRouter([
           const studednts = await getStudents();
           return studednts?.data;
         },
-        element: <StudentForm />
-      }
+        element: <StudentForm />,
+      },
     ],
   },
   {
@@ -175,6 +193,19 @@ const router = createBrowserRouter([
         element: <ManageCoursePreviewPage />,
       },
     ],
+  },
+  {
+    path: "/student/sign-in",
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY);
+
+      if (session && session.role === "student") {
+        throw redirect("/student");
+      }
+
+      return true;
+    },
+    element: <SignInPage type="student" />,
   },
 ]);
 
