@@ -141,4 +141,4 @@ export default function SignInPage({ type = "manager" }) {
 
 SignInPage.PropTypes = {
   type: PropTypes.string,
-}
+};
