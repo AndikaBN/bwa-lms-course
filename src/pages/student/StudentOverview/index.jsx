@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import React from "react";
 import CardCourse from "./cardCourse";
 
 export default function StudentPage() {
+
+  const courses = useLoaderData();
+  console.log(courses);
+  
   return (
     <section
       id="LatestCourse"
@@ -11,7 +15,9 @@ export default function StudentPage() {
       <h2 className="font-extrabold text-[22px] leading-[33px]">
         Latest Courses
       </h2>
-      <CardCourse />
+      {courses?.map((item) => (
+        <CardCourse key={item._id} id={item._id} imageUrl={item.thumbnail_url} title={item.name}/>
+      ))}
     </section>
   );
 }

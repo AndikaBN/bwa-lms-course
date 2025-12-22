@@ -21,7 +21,7 @@ import {
   getStudentsCourse,
 } from "../services/courseService";
 import ManageStudentCreatePage from "../pages/manager/student-create";
-import { getStudentDetail, getStudents } from "../services/studentService";
+import { getStudentCourses, getStudentDetail, getStudents } from "../services/studentService";
 import ManageStudentCourseListPage from "../pages/manager/student-course";
 import StudentForm from "../pages/manager/student-course/student-form";
 import { getOverviews } from "../services/overviewService";
@@ -196,6 +196,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        loader: async () => {
+          const courses = await getStudentCourses();
+          return courses?.data;
+        },
         element: <StudentPage />,
       },
       {
