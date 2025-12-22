@@ -16,12 +16,16 @@ export const getStudents = async (req, res) => {
 
     const imageUrl = process.env.APP_URL + "/uploads/students/";
 
-    const coursesData = await courseModel.find({
-      manager: req.user._id,
-    }).select("students");
+    const coursesData = await courseModel
+      .find({
+        manager: req.user._id,
+      })
+      .select("students");
 
     const response = students.map((item) => {
-      const studentCourses = coursesData.filter(course => course.students.includes(item._id));
+      const studentCourses = coursesData.filter((course) =>
+        course.students.includes(item._id)
+      );
       return {
         ...item.toObject(),
         photo_url: imageUrl + item.photo,
@@ -43,7 +47,7 @@ export const getStudents = async (req, res) => {
 
 export const getStudentById = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const student = await userModel.findById(id).select("name email");
 
@@ -63,7 +67,7 @@ export const getStudentById = async (req, res) => {
       message: "Internal Server Error",
     });
   }
-}
+};
 
 export const postStudent = async (req, res) => {
   try {
@@ -203,6 +207,34 @@ export const deleteStudent = async (req, res) => {
     return res.json({
       message: "Delete Student Success",
       data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getStudentCourses = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user._id).populate({
+      path: "courses",
+      select: "name category thumbnail",
+    });
+
+    const imageUrl = process.env.APP_URL + "/uploads/courses/";
+
+    const response = user?.courses.map((item) => {
+      return {
+        ...item.toObject(),
+        thumbnail_url: imageUrl + item.thumbnail,
+      };
+    });
+
+    return res.json({
+      message: "Get Courses by Student ID Success",
+      data: response,
     });
   } catch (error) {
     console.log(error);
